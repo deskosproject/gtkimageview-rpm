@@ -1,6 +1,6 @@
 Name:           gtkimageview
 Version:        1.6.4
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Simple image viewer widget
 
 Group:          System Environment/Libraries
@@ -9,6 +9,8 @@ URL:            http://trac.bjourne.webfactional.com
 # To download directly, use this URL:
 # Source0:        http://trac.bjourne.webfactional.com/attachment/wiki/WikiStart/gtkimageview-%{version}.tar.gz?format=raw
 Source0:        gtkimageview-%{version}.tar.gz
+# Fix FTBFS. https://bugzilla.redhat.com/show_bug.cgi?id=1307603
+Patch0:         gtkimageview-1.6.4-no-werror.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  glib2-devel
@@ -33,6 +35,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .no-werror
 
 
 %build
@@ -69,6 +72,10 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/gtkimageview.pc
 
 %changelog
+* Fri Nov 25 2016 Ricardo Arguello <rarguello@deskosproject.org> - 1.6.4-9
+- Rebuilt for DeskOS
+- don't use -Werror to fix FTBFS (#1307603)
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.4-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
